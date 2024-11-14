@@ -131,7 +131,8 @@ defmodule Mix.Tasks.Archive.Install do
 
   @impl true
   def build(_install_spec, _opts) do
-    src = Mix.Local.name_for(:archives, Mix.Project.config())
+    config = Mix.Project.config()
+    src = Mix.Local.name_for(:archives, config)
     previous = find_previous_versions(src)
 
     Enum.each(previous, fn path ->
@@ -139,7 +140,17 @@ defmodule Mix.Tasks.Archive.Install do
     end)
 
     Mix.Task.run("loadconfig")
-    Mix.Task.run("archive.build", [])
+
+    package = Map.new(config[:package] || [])
+
+    flags =
+      if package[:include_dot_files?] do
+        ["--include-dot-files"]
+      else
+        []
+      end
+
+    Mix.Task.run("archive.build", flags)
     src
   end
 

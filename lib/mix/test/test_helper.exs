@@ -287,6 +287,9 @@ unless File.dir?(target) do
     def project do
       [
         app: :git_repo,
+        package: [
+          include_dot_files?: true,
+        ],
         version: "0.1.0"
       ]
     end

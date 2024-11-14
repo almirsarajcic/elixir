@@ -157,6 +157,9 @@ defmodule Mix.Tasks.ArchiveTest do
       end
       """)
 
+      File.mkdir_p!("priv")
+      File.write!("priv/.dot_file", ".")
+
       System.cmd("git", ~w[init])
       System.cmd("git", ~w[add .])
       System.cmd("git", ~w[commit -m first-commit])
@@ -170,6 +173,7 @@ defmodule Mix.Tasks.ArchiveTest do
 
       refute File.regular?(tmp_path("userhome/.mix/archives/git_repo-0.1.0.ez"))
       assert File.dir?(tmp_path("userhome/.mix/archives/git_repo-0.1.0/git_repo-0.1.0/ebin"))
+      assert has_in_zip_file?(~c"git_repo-0.1.0.ez", ~c"git_repo-0.1.0/priv/.dot_file")
     end)
   after
     purge([GitRepo.Archive, GitRepo.MixProject])
