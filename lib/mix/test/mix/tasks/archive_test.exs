@@ -175,8 +175,9 @@ defmodule Mix.Tasks.ArchiveTest do
       assert File.dir?(tmp_path("userhome/.mix/archives/git_repo-0.1.0/git_repo-0.1.0/ebin"))
       assert has_in_zip_file?(~c"git_repo-0.1.0.ez", ~c"git_repo-0.1.0/priv/.dot_file")
     end)
-  after
-    purge([GitRepo.Archive, GitRepo.MixProject])
+
+    # after
+    #   purge([GitRepo.Archive, GitRepo.MixProject])
   end
 
   test "archive install, update, and uninstall life cycle" do
